@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <ul
       class="
         bg-gray-400
@@ -25,7 +25,7 @@
         </a>
       </li>
     </ul>
-    <div class="">
+    <div>
       <slot/>
     </div>
   </div>
