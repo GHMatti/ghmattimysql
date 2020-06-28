@@ -10,7 +10,10 @@
         <div class="flex-grow" />
         <m-icon
           @click="close()"
-          class="cursor-pointer rounded-full hover:bg-white hover:bg-opacity-25"
+          class="
+            cursor-pointer rounded-full hover:bg-white hover:bg-opacity-25
+            transition duration-300 ease-in-out
+          "
         >
           close
         </m-icon>
@@ -38,23 +41,16 @@
         </m-tab-item>
         <m-tab-item label="Slowest Queries" icon="slow_motion_video">
           <div class="p-2" style="height: 480px;">
-            <v-data-table
-              align-end
+            <m-data-table
               :headers="headers"
               :items="slowqueries"
-              :items-per-page="7"
-              :footer-props="{
-                'items-per-page-options': [7],
-                prevIcon: 'chevron_left',
-                nextIcon: 'chevron_right'
-              }"
             >
-              <template v-slot:items="props">
-                <td>{{ props.item.resource }}</td>
-                <td>{{ props.item.sql }}</td>
-                <td>{{ props.item.queryTime }}</td>
+              <template v-slot:row="props">
+                <td class="text-center">{{ props.item.resource }}</td>
+                <td class="text-left">{{ props.item.sql }}</td>
+                <td class="text-center">{{ props.item.queryTime }}ms</td>
               </template>
-            </v-data-table>
+            </m-data-table>
           </div>
         </m-tab-item>
       </m-tabs>
@@ -65,8 +61,9 @@
 
 <script>
 import MAppBar from './components/MAppBar.vue';
-import MIcon from './components/MIcon.vue';
 import MChart from './components/MChart.vue';
+import MDataTable from './components/MDataTable.vue';
+import MIcon from './components/MIcon.vue';
 import MTabs from './components/MTabs.vue';
 import MTabItem from './components/MTabItem.vue';
 
@@ -74,6 +71,7 @@ export default {
   components: {
     MAppBar,
     MChart,
+    MDataTable,
     MIcon,
     MTabs,
     MTabItem,
@@ -128,6 +126,7 @@ export default {
           text: 'Query',
           value: 'sql',
           sortable: false,
+          align: 'left',
         },
         {
           text: 'Execution Time (ms)',

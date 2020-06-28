@@ -14,7 +14,11 @@
       >
         <a
           @click="setActiveTab(index)"
-          class="px-4 py-2 -m-b-2px border-b-2 font-medium flex items-center cursor-pointer"
+          class="
+            px-4 py-2 -m-b-2px border-b-2 font-medium cursor-pointer
+            flex items-center
+            transition duration-300 ease-in-out
+          "
           :class="calculateClasses(tab.isActive)"
         >
           <m-icon
