@@ -5,7 +5,6 @@
 <script>
 import Chart from 'chart.js';
 
-Chart.defaults.global.defaultFontFamily = "'Alegreya Sans', 'sans-serif'";
 export default {
   data() {
     return {
@@ -14,6 +13,7 @@ export default {
   },
   methods: {
     createChart(chartId) {
+      Chart.defaults.global.defaultFontFamily = this.chartFontFamily;
       const ctx = document.getElementById(chartId);
       this.myChart = new Chart(ctx, {
         type: this.type,
@@ -68,6 +68,10 @@ export default {
     width: {
       type: Number,
       default: 1600,
+    },
+    chartFontFamily: {
+      type: String,
+      default: "'Alegreya Sans', 'sans-serif'",
     },
   },
   mounted() {

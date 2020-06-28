@@ -9,7 +9,4 @@ module.exports = {
       moment: 'moment',
     });
   },
-  transpileDependencies: [
-    'vuetify',
-  ],
 };

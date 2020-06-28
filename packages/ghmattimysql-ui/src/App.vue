@@ -1,87 +1,82 @@
 <template>
-  <v-app v-if="showInterface">
-    <v-content>
-      <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex xs9>
-            <v-card class="elevation-12">
-              <v-system-bar window dark>
-                MySQL Explorer
-                <v-spacer></v-spacer>
-                <v-icon @click="close()">close</v-icon>
-              </v-system-bar>
-              <v-tabs
-                v-model="active"
-                color="primary"
-                slider-color="secondary"
-              >
-                <v-tab ripple>
-                  Time-resolved
-                </v-tab>
-                <v-tab ripple>
-                  Resources
-                </v-tab>
-                <v-tab ripple>
-                  Slowest Queries
-                </v-tab>
-                <v-tab-item>
-                  <v-flex xs12 pa-2 style="height: 480px;">
-                    <m-chart
-                      id="time-graph"
-                      :labels="timeLabels"
-                      :datasets="timeData"
-                      height="540"
-                    ></m-chart>
-                  </v-flex>
-                </v-tab-item>
-                <v-tab-item>
-                  <v-flex xs12 pa-2 style="height: 480px;">
-                    <m-chart
-                      id="resource-graph"
-                      :labels="resourceLabels"
-                      :datasets="resourceData"
-                      height="540"
-                    ></m-chart>
-                  </v-flex>
-                </v-tab-item>
-                <v-tab-item>
-                  <v-flex xs12 pa-2 style="height: 480px;">
-                    <v-data-table
-                      align-end
-                      :headers="headers"
-                      :items="slowqueries"
-                      :items-per-page="7"
-                      :footer-props="{
-                        'items-per-page-options': [7],
-                        prevIcon: 'chevron_left',
-                        nextIcon: 'chevron_right'
-                      }"
-                    >
-                      <template v-slot:items="props">
-                        <td>{{ props.item.resource }}</td>
-                        <td>{{ props.item.sql }}</td>
-                        <td>{{ props.item.queryTime }}</td>
-                      </template>
-                    </v-data-table>
-                  </v-flex>
-                </v-tab-item>
-              </v-tabs>
-              <v-footer dark color="black" height="28" style="min-height: 28px;">
-              </v-footer>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-content>
-  </v-app>
+  <main
+    v-if="showInterface"
+    class="flex h-screen bg-opacity-50 bg-black items-center justify-center"
+  >
+    <div class="w-full bg-white shadow-2xl rounded-md max-w-screen-xl">
+      <m-app-bar>
+        <m-icon class="mr-2">storage</m-icon>
+        <span>MySQL Explorer</span>
+        <div class="flex-grow" />
+        <m-icon
+          @click="close()"
+          class="cursor-pointer rounded-full hover:bg-white hover:bg-opacity-25"
+        >
+          close
+        </m-icon>
+      </m-app-bar>
+      <m-tabs>
+        <m-tab-item label="Time-resolved" icon="timeline">
+          <div class="p-2" style="height: 480px;">
+            <m-chart
+              id="time-graph"
+              :labels="timeLabels"
+              :datasets="timeData"
+              :height="540"
+            ></m-chart>
+          </div>
+        </m-tab-item>
+        <m-tab-item label="Resources" icon="apps">
+          <div class="p-2" style="height: 480px;">
+            <m-chart
+              id="resource-graph"
+              :labels="resourceLabels"
+              :datasets="resourceData"
+              :height="540"
+            ></m-chart>
+          </div>
+        </m-tab-item>
+        <m-tab-item label="Slowest Queries" icon="slow_motion_video">
+          <div class="p-2" style="height: 480px;">
+            <v-data-table
+              align-end
+              :headers="headers"
+              :items="slowqueries"
+              :items-per-page="7"
+              :footer-props="{
+                'items-per-page-options': [7],
+                prevIcon: 'chevron_left',
+                nextIcon: 'chevron_right'
+              }"
+            >
+              <template v-slot:items="props">
+                <td>{{ props.item.resource }}</td>
+                <td>{{ props.item.sql }}</td>
+                <td>{{ props.item.queryTime }}</td>
+              </template>
+            </v-data-table>
+          </div>
+        </m-tab-item>
+      </m-tabs>
+      <div class="h-8 bg-black w-full rounded-b-md" />
+    </div>
+  </main>
 </template>
 
 <script>
+import MAppBar from './components/MAppBar.vue';
+import MIcon from './components/MIcon.vue';
 import MChart from './components/MChart.vue';
+import MTabs from './components/MTabs.vue';
+import MTabItem from './components/MTabItem.vue';
 
 export default {
   components: {
+    MAppBar,
     MChart,
+    MIcon,
+    MTabs,
+    MTabItem,
   },
   data() {
     return {
@@ -197,17 +192,16 @@ export default {
       const item = event.data || event.detail;
       if (item && this[item.type]) this[item.type](item);
     });
+    // For editting in browser
+    setTimeout(this.onToggleShow, 1000);
   },
   name: 'app',
 };
 </script>
 
 <style lang="scss">
+@import './styles/tailwind.css';
 @import './styles/mixins';
-
-html {
-  overflow-y: hidden !important;
-}
 
 @include font-face('Alegreya Sans', './assets/fonts/alegreya-sans-v9-latin-300',
   300, normal, woff woff2);
