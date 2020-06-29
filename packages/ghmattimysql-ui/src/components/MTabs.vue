@@ -2,7 +2,7 @@
   <div>
     <ul
       class="
-        bg-gray-400
+        bg-gray-300
         border-b-2 border-black border-opacity-25
         flex flex-grow flex-shrink-0 justify-start
       "
@@ -15,7 +15,7 @@
         <a
           @click="setActiveTab(index)"
           class="
-            px-4 py-2 -m-b-2px border-b-2 font-medium cursor-pointer
+            px-4 py-2 -mb-2px border-b-2 font-medium cursor-pointer
             flex items-center
             transition duration-300 ease-in-out
           "
@@ -69,6 +69,8 @@ export default {
         'border-opacity-0': !isActive,
         'hover:text-opacity-75': !isActive,
         'hover:border-opacity-50': !isActive,
+        'hover:bg-black': !isActive,
+        'hover:bg-opacity-10': !isActive,
       };
     },
     parseNodes() {
@@ -90,9 +92,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.-m-b-2px {
-  margin-bottom: -2px;
-}
-</style>
