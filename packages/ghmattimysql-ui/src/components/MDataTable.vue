@@ -1,13 +1,16 @@
 <template>
   <table class="table-auto w-full">
-    <thead><tr>
+    <thead><tr class="border-b border-black">
       <th
         v-for="head in headers"
         :key="head.value"
-        :class="computeHeadClasses(head)"
+        :class="computeHeadPointerClasses(head)"
         @click="sortData(head.value)"
       >
-        <div class="flex items-center text-opacity-50 text-black hover:text-opacity-100">
+        <div
+          class="flex items-center text-black h-12"
+          :class="computeHeadClasses(head)"
+        >
           <span class="text-opacity-100 text-black">
             {{ head.text }}
           </span>
@@ -19,7 +22,7 @@
               transition duration-300 ease-in-out
             "
           >
-            arrow_downward
+            {{ (sortColumn === head.value && !sortDescending) ? 'arrow_upward' : 'arrow_downward' }}
           </m-icon>
         </div>
       </th>
@@ -43,16 +46,19 @@
     </tbody>
     <tr>
       <td :colspan="headers.length">
-        <div class="flex items-center">
-          {{ this.fromIndex + 1 }} - {{ this.toIndex + 1 }}
-          of {{ this.items.length }}
+        <div class="flex items-center justify-end mr-8 h-12">
+          <span class="mx-2">
+            {{ this.fromIndex + 1 }} - {{ this.toIndex + 1 }}
+            of {{ this.items.length }}
+          </span>
           <m-icon
             small
             @click.native="prevPage()"
             class="
-              cursor-pointer rounded-full hover:bg-black hover:bg-opacity-10
-              transition duration-300 ease-in-out
+              cursor-pointer rounded-full
+              transition duration-300 ease-in-out text-black
             "
+            :class="(currentPage === 0) ? 'text-opacity-25' : 'hover:bg-black hover:bg-opacity-10'"
           >
             arrow_back_ios
           </m-icon>
@@ -60,9 +66,10 @@
             small
             @click.native="nextPage()"
             class="
-              cursor-pointer rounded-full hover:bg-black hover:bg-opacity-10
-              transition duration-300 ease-in-out
+              cursor-pointer rounded-full
+              transition duration-300 ease-in-out text-black
             "
+            :class="(hasNextPage) ? 'hover:bg-black hover:bg-opacity-10' : 'text-opacity-25'"
           >
             arrow_forward_ios
           </m-icon>
@@ -126,10 +133,16 @@ export default {
   methods: {
     computeHeadClasses(head) {
       return {
-        'text-center': !head.align || (head.align && head.align) === 'center',
-        'text-left': head.align && head.align === 'left',
-        'text-right': head.align && head.align === 'right',
-        'text-justify': head.align && head.align === 'justify',
+        'text-opacity-25': head.value !== this.sortColumn,
+        'text-opacity-50': head.value === this.sortColumn,
+        'hover:text-opacity-100': true,
+        'justify-center': !head.align || (head.align && head.align) === 'center',
+        'justify-start': head.align && head.align === 'left',
+        'justify-end': head.align && head.align === 'right',
+      };
+    },
+    computeHeadPointerClasses(head) {
+      return {
         'cursor-default': head.sortable === false,
         'cursor-pointer': head.sortable !== false,
       };

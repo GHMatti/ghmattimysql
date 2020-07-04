@@ -9,9 +9,9 @@
         <span>MySQL Explorer</span>
         <div class="flex-grow" />
         <m-icon
-          @click="close()"
+          @click.native="close()"
           class="
-            cursor-pointer rounded-full hover:bg-white hover:bg-opacity-25
+            cursor-pointer rounded-full hover:bg-white hover:bg-opacity-10
             transition duration-300 ease-in-out
           "
         >
@@ -44,11 +44,12 @@
             <m-data-table
               :headers="headers"
               :items="slowqueries"
+              :items-per-page="7"
             >
               <template v-slot:row="props">
-                <td class="text-center">{{ props.item.resource }}</td>
-                <td class="text-left">{{ props.item.sql }}</td>
-                <td class="text-center">{{ props.item.queryTime }}ms</td>
+                <td class="text-center h-12">{{ props.item.resource }}</td>
+                <td class="text-left h-12">{{ props.item.sql }}</td>
+                <td class="text-center h-12">{{ props.item.queryTime }}ms</td>
               </template>
             </m-data-table>
           </div>
@@ -192,7 +193,7 @@ export default {
       if (item && this[item.type]) this[item.type](item);
     });
     // For editting in browser
-    setTimeout(this.onToggleShow, 1000);
+    // setTimeout(this.onToggleShow, 1000);
   },
   name: 'app',
 };
