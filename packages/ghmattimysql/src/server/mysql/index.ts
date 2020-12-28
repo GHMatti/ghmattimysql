@@ -39,6 +39,7 @@ class MySQL {
         const formattedVersion = formatVersion(result[0]['VERSION()']);
         profiler.setVersion(formattedVersion);
         this.logger.success('Database server connection established.');
+        emit("onDatabaseConnect");
       } else {
         this.logger.error(error.message);
       }
