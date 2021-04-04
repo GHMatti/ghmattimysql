@@ -53,7 +53,10 @@ class MySQL {
       db.query(sql, (error, result) => {
         this.profiler.profile(process.hrtime(start), this.formatQuery(sql), invokingResource);
         if (error) reject(error);
-        resolve(result);
+        
+        setImmediate(async () => {
+          resolve(result);
+        });
       });
     }).catch((error) => {
       if (connection) {
